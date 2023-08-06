@@ -1,0 +1,13 @@
+import:
+  - ~/.config/alacritty/themes/catppuccin/catppuccin-mocha.yml
+
+window:
+  padding:
+    x: 7
+    y: 7
+
+font:
+  normal:
+    family: Mononoki Nerd Font
+  size: 11.5
+
