@@ -20,9 +20,9 @@ o.hlsearch = true
 o.incsearch = true
 
 o.termguicolors = true
+o.guifont = 'Mononoki Nerd Font:h11'
 
 o.scrolloff = 8
 o.sidescrolloff = 8
 o.signcolumn = 'yes'
-
 
