@@ -11,7 +11,7 @@ local M = {
 
       ---@diagnostic disable-next-line: missing-fields
       configs.setup({
-        ensure_installed = { 'lua', 'vim', 'vimdoc', },
+        ensure_installed = { 'lua', 'vim', 'vimdoc', 'markdown', },
         sync_install = false,
         highlight = { enable = true },
         indent = { enable = true },
