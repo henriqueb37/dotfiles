@@ -10,13 +10,17 @@ vim.g.maplocalleader = ' m'
 nmap('j', 'gj')
 nmap('k', 'gk')
 
+nmap('<Esc>', vim.cmd.nohlsearch)
+
 nmap('<C-s>', vim.cmd.write)
 
-nmap('gp', '`[v`]')  -- select last pasted text (last edited text)
+nmap('vgp', '`[v`]')  -- select last pasted text (last edited text)
 nmap(']p', ':put<Cr>`[V`]=')  -- paste with right indentation
 
 imap('<C-BS>', '<C-w>')
 imap('<C-h>', '<C-w>')
+
+imap('jk', '<Esc>')
 
 vmap('>', '>gv')
 vmap('<', '<gv')
