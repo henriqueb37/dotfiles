@@ -9,6 +9,8 @@ vim.g.maplocalleader = ' m'
 
 nmap('j', 'gj')
 nmap('k', 'gk')
+vmap('j', 'gj')
+vmap('k', 'gk')
 
 nmap('<Esc>', vim.cmd.nohlsearch)
 
@@ -24,4 +26,6 @@ imap('jk', '<Esc>')
 
 vmap('>', '>gv')
 vmap('<', '<gv')
+
+nmap('<leader>\'c', ':Telescope find_files cwd=~/.config/nvim<Cr>', { desc = 'Find file in config' })
 
