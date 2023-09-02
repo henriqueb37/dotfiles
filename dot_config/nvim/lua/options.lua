@@ -5,6 +5,7 @@ vim.g.netrwPlugin = 1
 
 o.clipboard = 'unnamedplus'
 
+o.number = true
 o.relativenumber = true
 
 o.shiftwidth = 2
@@ -24,5 +25,4 @@ o.guifont = 'Mononoki Nerd Font:h11'
 
 o.scrolloff = 8
 o.sidescrolloff = 8
-o.signcolumn = 'yes'
 

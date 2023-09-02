@@ -40,6 +40,22 @@ local M = {
       require('colorizer').setup()
     end,
   },
+
+  {
+    "folke/zen-mode.nvim",
+    keys = {
+      { '<leader>z', function ()
+        require('zen-mode').toggle()
+      end, desc = 'Toggle zen mode'}
+    },
+    opts = {},
+  },
+
+  {
+    "aserowy/tmux.nvim",
+    lazy = false,
+    opts = {},
+  },
 }
 
 return M
