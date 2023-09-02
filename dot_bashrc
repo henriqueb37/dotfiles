@@ -11,3 +11,5 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
 fi
 export PATH
 
+alias ls='ls --color=always'
+
