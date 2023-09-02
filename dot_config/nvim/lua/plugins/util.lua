@@ -31,7 +31,15 @@ local M = {
     config = function()
       require("nvim-surround").setup{}
     end
-  }
+  },
+
+  {
+    'norcalli/nvim-colorizer.lua',
+    event = 'VeryLazy',
+    config = function()
+      require('colorizer').setup()
+    end,
+  },
 }
 
 return M
