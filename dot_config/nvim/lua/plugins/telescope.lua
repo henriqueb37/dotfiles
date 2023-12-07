@@ -45,7 +45,14 @@ return {
     keys = {
       { '<leader>t', toggle_tree, desc = 'toggle file tree' }
     },
-    opts = {},
-  }
+    opts = {
+      sync_root_with_cwd = true,
+      disable_netrw = false,
+      hijack_netrw = true,
+      hijack_directories = {
+        enable = true,
+      },
+    },
+  },
 }
 

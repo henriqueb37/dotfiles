@@ -1,8 +1,5 @@
 local o = vim.o
 
-vim.g.netrw = 1
-vim.g.netrwPlugin = 1
-
 o.clipboard = 'unnamedplus'
 
 o.number = true
