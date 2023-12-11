@@ -519,7 +519,7 @@ Support for Javascript/Typescript.
 (use-package vertico
   :bind
   (:map vertico-map
-   ("C-j" . vetico-next)
+   ("C-j" . vertico-next)
    ("C-M-j" . vertico-next-group)
    ("C-k" . vertico-previous)
    ("C-M-k" . vetico-previous-group))
