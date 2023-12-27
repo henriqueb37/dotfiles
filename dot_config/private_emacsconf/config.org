@@ -19,7 +19,7 @@
   - [[#display-line-numbers-and-truncated-lines][Display Line Numbers and Truncated Lines]]
 - [[#helpful][HELPFUL]]
 - [[#hyperbole][HYPERBOLE]]
-- [[#language-support][LANGUAGE SUPPORT]]
+- [[#language-support-lsp][LANGUAGE SUPPORT (LSP)]]
   - [[#typescript][Typescript]]
 - [[#vertico-and-consult][VERTICO (AND CONSULT)]]
 - [[#org-mode][ORG MODE]]
@@ -59,7 +59,7 @@
 
 * IMPORTANT PROGRAMS TO LOAD FIRST
 #+begin_src emacs-lisp
-(defvar elpaca-installer-version 0.5)
+(defvar elpaca-installer-version 0.6)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -223,9 +223,6 @@
     "h x" '(helpful-command :wk "Describe command")
     ;;"h r r" '((lambda () (interactive) (load-file "~/.config/emacs/init.el")) :wk "Reload emacs config"))
     "h r r" '(reload-init-file :wk "Reload emacs config"))
-
-  (my/leader-keys
-    "l" '(lsp-command-map :wk "lsp"))
 
   (my/leader-keys
     "t" '(:ignore t :wk "toggle")
@@ -449,7 +446,7 @@ Manages links. Use RET to follow links.
   (hyperbole-mode 1))
 #+end_src
 
-* LANGUAGE SUPPORT
+* LANGUAGE SUPPORT (LSP)
 LSP support for Emacs.
 
 #+begin_src emacs-lisp
@@ -458,13 +455,12 @@ LSP support for Emacs.
   (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
-  :commands (lsp lsp-defered lsp-command-map)
+  :commands (lsp lsp-deferred)
   :config
   (lsp-enable-which-key-integration t)
   (add-hook 'lsp-mode-hook 'my/lsp-mode-setup))
 
 (use-package lsp-ui
-  :elpaca nil
   :hook (lsp-mode . lsp-ui-mode))
 
 (use-package consult-lsp
@@ -479,7 +475,7 @@ Support for Javascript/Typescript.
 #+begin_src emacs-lisp
 (use-package typescript-mode
   :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-defered)
+  :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2))
 
