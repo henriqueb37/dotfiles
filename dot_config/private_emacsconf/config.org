@@ -112,7 +112,10 @@
   :elpaca nil
   :config
   (setq ring-bell-function #'ignore)
-  (setq-default scroll-margin 7))
+  (setq-default scroll-margin 7
+                scroll-step 1
+                scroll-conservatively 9999)
+  (pixel-scroll-precision-mode 1))
 #+end_src
 
 ** Load Evil Mode
@@ -135,8 +138,10 @@
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
   (evil-collection-init))
 
+(use-package embrace)
+
 (use-package evil-embrace
-  :after evil-surround
+  :after (evil-surround embrace)
   :config
   (evil-embrace-enable-evil-surround-integration))
 
@@ -404,15 +409,15 @@ Install =luacheck= from your Linux distro's repositories for flycheck to work co
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
   :font "JetBrainsMono Nerd Font"
-  :height 105
+  :height 110
   :weight 'medium)
 (set-face-attribute 'variable-pitch nil
   :font "Roboto"
-  :height 120
+  :height 130
   :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
   :font "JetBrainsMono Nerd Font"
-  :height 105
+  :height 110
   :weight 'medium)
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.
@@ -425,7 +430,7 @@ Install =luacheck= from your Linux distro's repositories for flycheck to work co
 ;; This sets the default font on all graphical frames created after restarting Emacs.
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
 ;; are not right unless I also add this method of setting the default font.
-(add-to-list 'default-frame-alist '(font . "Mononoki Nerd Font-11"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font-11"))
 #+end_src
 
 * GRAPHICAL USER INTERFACE TWEAKS
