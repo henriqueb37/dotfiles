@@ -414,7 +414,7 @@ Install =luacheck= from your Linux distro's repositories for flycheck to work co
 (set-face-attribute 'variable-pitch nil
   :font "Roboto"
   :height 130
-  :weight 'medium)
+  :weight 'light)
 (set-face-attribute 'fixed-pitch nil
   :font "JetBrainsMono Nerd Font"
   :height 110
