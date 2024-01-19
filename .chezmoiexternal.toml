@@ -9,13 +9,19 @@
 [".config/emacs"]
   type = "archive"
   url = "https://github.com/plexus/chemacs2/archive/master.tar.gz"
-  exact = true
+  exact = false
   stripComponents = 1
 
 # JetBrains Mono Nerd Font
 [".fonts/JetBrainsMonoNF"]
   type = "archive"
   url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
+  exact = true
+
+# Roboto Mono Nerd Font
+[".fonts/RobotoMonoNF"]
+  type = "archive"
+  url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
   exact = true
 
 # Tmux plugin manager
