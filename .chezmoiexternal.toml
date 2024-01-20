@@ -16,13 +16,13 @@
 [".fonts/JetBrainsMonoNF"]
   type = "archive"
   url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-  exact = true
+  exact = false
 
 # Roboto Mono Nerd Font
 [".fonts/RobotoMonoNF"]
   type = "archive"
   url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
-  exact = true
+  exact = false
 
 # Tmux plugin manager
 [".tmux/plugins/tpm"]
