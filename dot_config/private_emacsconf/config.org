@@ -10,6 +10,7 @@
   - [[#general-keybindigs][General keybindigs]]
 - [[#all-the-icons][ALL THE ICONS]]
 - [[#buffer-move][BUFFER-MOVE]]
+- [[#centered-text][CENTERED TEXT]]
 - [[#company][COMPANY]]
 - [[#dashboard-splash-screen][DASHBOARD (SPLASH SCREEN)]]
 - [[#diminish][DIMINISH]]
@@ -357,6 +358,17 @@ one, an error is signaled."
       ;; move this one to top
       (set-window-buffer other-win buf-this-buf)
       (select-window other-win))))
+#+end_src
+
+* CENTERED TEXT
++ [[https://github.com/rnkn/olivetti][Olivetti]] centers the text in the window
+
+#+begin_src emacs-lisp
+(use-package olivetti
+  :config
+  (setq-default olivetti-body-width 85)
+  (my/leader-keys
+    "t z" '(olivetti-mode :wk "Toggle centered text mode")))
 #+end_src
 
 * COMPANY
@@ -894,7 +906,15 @@ Vterm is a terminal emulator within Emacs.  The 'shell-file-name' setting sets t
 #+begin_src emacs-lisp
 (use-package catppuccin-theme
   :config
-  (load-theme 'catppuccin :no-confirm))
+  (load-theme 'catppuccin :no-confirm)
+  (defun catppuccin-toggle-light ()
+    (interactive)
+    (if (eq catppuccin-flavor 'latte)
+        (setq catppuccin-flavor 'mocha)
+      (setq catppuccin-flavor 'latte))
+    (catppuccin-reload))
+  (my/leader-keys
+    "t c" '(catppuccin-toggle-light :wk "Toggle light mode")))
 #+end_src
 
 * WHICH-KEY
