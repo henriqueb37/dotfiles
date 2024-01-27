@@ -30,6 +30,7 @@
   - [[#eye-candy][Eye Candy]]
   - [[#fix-indentation-annoyances][Fix indentation annoyances]]
   - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
+  - [[#org-queries][Org queries]]
   - [[#org-roam][Org Roam]]
 - [[#rainbow-delimiters][RAINBOW DELIMITERS]]
 - [[#rainbow-mode][RAINBOW MODE]]
@@ -764,6 +765,15 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 
 #+begin_src emacs-lisp 
 (require 'org-tempo)
+#+end_src
+
+** Org queries
+#+begin_src emacs-lisp
+;; Dependency of orq-ql
+(use-package seq)
+
+(use-package org-ql
+  :after seq)
 #+end_src
 
 ** Org Roam
