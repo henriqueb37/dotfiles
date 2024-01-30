@@ -202,7 +202,33 @@
   :config
   (general-evil-setup)
 
-  (general-define-key "<escape>" 'keyboard-escape-quit)
+  (defvar my-escape-hook nil "Hook triggered by pressing the <escape> key.")
+  (defun my/escape (&optional interactive)
+    "Run `my-escape-hook'."
+    (interactive (list 'interactive))
+    (let ((inhibit-quit t))
+      (cond ((minibuffer-window-active-p (minibuffer-window))
+             ;; quit the minibuffer if open.
+             (when interactive
+               (setq this-command 'abort-recursive-edit))
+             (abort-recursive-edit))
+            ;; Run all escape hooks. If any returns non-nil, then stop there.
+            ((run-hook-with-args-until-success 'my-escape-hook))
+            ;; don't abort macros
+            ((or defining-kbd-macro executing-kbd-macro) nil)
+            ;; Back to the default
+            ((unwind-protect (keyboard-quit)
+               (when interactive
+                 (setq this-command 'keyboard-quit)))))))
+
+  (global-set-key [remap keyboard-quit] #'my/escape)
+
+  (defun +evil-escape-a (&rest _)
+    (when (called-interactively-p 'any)
+      (call-interactively #'my/escape)))
+  (advice-add #'evil-force-normal-state :after #'+evil-escape-a)
+  (general-define-key "<escape>" 'my/escape)
+
   (general-define-key :states 'normal "q" 'my/evil-record-macro)
   (general-define-key :states 'motion "RET" 'hkey-either)
 
@@ -441,7 +467,12 @@ Install =luacheck= from your Linux distro's repositories for flycheck to work co
   :ensure t
   :defer t
   :diminish
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :config
+  (setq flycheck-indication-mode 'right-fringe)
+  ;; Left-pointing arrow
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [16 48 112 240 112 48 16] nil nil 'center))
 
 (use-package flycheck-posframe
   :after flycheck
@@ -575,6 +606,64 @@ Support for Javascript/Typescript.
 
 #+begin_src emacs-lisp
 (use-package magit)
+
+(use-package diff-hl
+  :after magit
+  :config
+  ;; --- Appearance ---
+  (setq-default fringes-outside-margins t)
+  (defun +diff-hl-define-thin-bitmaps-a (&rest args)
+    (define-fringe-bitmap 'diff-hl-bmp-middle [224] nil nil '(center repeated))
+    (define-fringe-bitmap 'diff-hl-bmp-delete [240 224 192 128] nil nil 'top))
+  (advice-add #'diff-hl-define-bitmaps :override #'+diff-hl-define-thin-bitmaps-a)
+  (defun +diff-hl-type-face-fn (type _pos)
+    (intern (format "diff-hl-%s" type)))
+  (defun +diff-hl-type-at-pos-fn (type _pos)
+    (if (eq type 'delete)
+        'diff-hl-bmp-delete
+      'diff-hl-bmp-middle))
+  (advice-add #'diff-hl-fringe-bmp-from-pos  :override #'+diff-hl-type-at-pos-fn)
+  (advice-add #'diff-hl-fringe-bmp-from-type :override #'+diff-hl-type-at-pos-fn)
+  (setq diff-hl-draw-borders nil)
+  (defun +diff-hl-fix-faces-h ()
+    (set-face-background 'diff-hl-insert nil)
+    (set-face-background 'diff-hl-delete nil)
+    (set-face-background 'diff-hl-change nil))
+  (add-hook 'diff-hl-mode-hook '+diff-hl-fix-faces-h)
+
+  ;; --- Functionality ---
+  (add-hook 'find-file-hook 'diff-hl-mode)
+  (add-hook 'vc-dir-mode-hook 'diff-hl-dir-mode)
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+  (add-hook 'diff-hl-mode-hook 'diff-hl-flydiff-mode)
+
+  (setq vc-git-diff-switches        '("--histogram")
+        diff-hl-flydiff-delay       0.5
+        diff-hl-show-staged-changes nil)
+
+  (defun +diff-hl-update-h (&rest _)
+    (ignore (or inhibit-redisplay
+                (and (or (bound-and-true-p diff-hl-mode)
+                         (bound-and-true-p diff-hl-dir-mode))
+                     (diff-hl-update-once)))))
+
+  (add-hook 'my-escape-hook #'+diff-hl-update-h t)
+  (add-hook 'window-selection-change-functions #'+diff-hl-update-h)
+
+  (add-hook 'magit-pre-refresh-hook  #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
+
+  (defun +diff-hl-init-flydiff-mode-h ()
+    (if (not diff-hl-flydiff-mode)
+        (remove-hook 'evil-insert-state-exit-hook #'diff-hl-flydiff-update)
+      (add-hook 'evil-insert-state-exit-hook #'diff-hl-flydiff-update)))
+  (add-hook 'diff-hl-flydiff-mode-hook #'+diff-hl-init-flydiff-mode-h)
+
+  (defun +diff-hl-fix-cursor-jump (fn &rest args)
+    (let ((pt (point)))
+      (prog1 (apply fn args)
+        (goto-char pt))))
+  (advice-add #'diff-hl-revert-hunk :around #'+diff-hl-fix-cursor-jump))
 #+end_src
 
 * MODELINE
@@ -602,7 +691,6 @@ Support for Javascript/Typescript.
   :init
   (vertico-mode)
   (setq vertico-cycle t)
-  :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
   (defun crm-indicator (args)
