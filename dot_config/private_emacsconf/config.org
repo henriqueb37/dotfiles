@@ -609,7 +609,14 @@ Support for Javascript/Typescript.
 [[https://magit.vc/][Magit]] provides a git client.
 
 #+begin_src emacs-lisp
-(use-package magit)
+(use-package magit
+  :config
+  (general-define-key
+   :keymaps 'magit-status-mode-map
+   "k" #'magit-section-backward
+   "j" #'magit-section-forward
+   "C-k" #'magit-delete-thing
+   "C-j" #'magit-status-jump))
 
 (use-package diff-hl
   :after magit
