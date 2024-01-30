@@ -794,11 +794,7 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 
 ** Org queries
 #+begin_src emacs-lisp
-;; Dependency of orq-ql
-(use-package seq)
-
-(use-package org-ql
-  :after seq)
+(use-package org-ql)
 #+end_src
 
 ** Org Roam
