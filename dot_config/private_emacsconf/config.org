@@ -4,6 +4,7 @@
 #+options: toc:2
 
 * TABLE OF CONTENTS :toc:
+- [[#about-this-config][ABOUT THIS CONFIG]]
 - [[#things-to-install][THINGS TO INSTALL]]
 - [[#important-programs-to-load-first][IMPORTANT PROGRAMS TO LOAD FIRST]]
   - [[#load-evil-mode][Load Evil Mode]]
@@ -46,6 +47,9 @@
 - [[#sudo-edit][SUDO EDIT]]
 - [[#theme][THEME]]
 - [[#which-key][WHICH-KEY]]
+
+* ABOUT THIS CONFIG
+A lot of the code in this config is from [[https://github.com/doomemacs/doomemacs][Doom Emacs]] and the overall structure is taken from [[https://gitlab.com/dwt1/configuring-emacs][DistroTube's Configuring Emacs series]]. This basically takes some of the Doom Emacs features in a more stripped down version, trying to be a bit more lightweight.
 
 * TODO THINGS TO INSTALL
 - [ ] evil-args
