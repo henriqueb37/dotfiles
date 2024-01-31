@@ -24,6 +24,7 @@
 - [[#helpful][HELPFUL]]
 - [[#hyperbole][HYPERBOLE]]
 - [[#language-support-lsp][LANGUAGE SUPPORT (LSP)]]
+  - [[#lua][Lua]]
   - [[#typescript][Typescript]]
 - [[#magit][MAGIT]]
 - [[#modeline][MODELINE]]
@@ -584,6 +585,16 @@ LSP support for Emacs.
   :after (lsp-mode consult)
   :config
   (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
+#+end_src
+
+** Lua
+Support for Lua.
+
+#+begin_src emacs-lisp
+(use-package lua-mode
+  :hook (lua-mode . lsp-deferred)
+  :init
+  (setq lua-indent-level 2))
 #+end_src
 
 ** Typescript
