@@ -408,7 +408,9 @@ one, an error is signaled."
 * CHEZMOI
 [[https://github.com/tuh8888/chezmoi.el][Chezmoi.el]] provides integration with the [[https://www.chezmoi.io/][Chezmoi]] config manager
 
-#+begin_src emacs-lisp
+(Temporarily disabled, =:tangle no=)
+
+#+begin_src emacs-lisp :tangle no
 (use-package chezmoi
   :config
   (my/leader-keys
