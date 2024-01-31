@@ -255,7 +255,7 @@ A lot of the code in this config is from [[https://github.com/doomemacs/doomemac
   (my/leader-keys
     "." '(find-file :wk "Find file")
     "f" '(:ignore t :wk "file")
-    "f c" '((lambda () (interactive) (find-file (expand-file-name "config.org" user-emacs-directory))) :wk "Edit emacs config")
+    "f c" '((lambda () (interactive) (find-file (file-truename (expand-file-name "config.org" user-emacs-directory)))) :wk "Edit emacs config")
     "f s" '(save-buffer :wk "Save file")
     "TAB TAB" '(comment-line :wk "Comment lines"))
 
