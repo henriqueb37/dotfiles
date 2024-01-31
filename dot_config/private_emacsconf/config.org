@@ -440,7 +440,17 @@ one, an error is signaled."
   (company-minimum-prefix-length 2)
   (company-show-numbers t)
   (company-tooltip-align-annotations 't)
-  (global-company-mode 1))
+  :config
+  (global-company-mode 1)
+  (defun +company-backend-with-yas (backend)
+    "Enable yasnippet for a given backend. Taken from https://github.com/syl20bnr/spacemacs/pull/179"
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (defun +company-enable-yas ()
+    (setq company-backends (mapcar #'+company-backend-with-yas company-backends)))
+  (+company-enable-yas))
 
 (use-package company-box
   :after company
