@@ -236,6 +236,9 @@ A lot of the code in this config is from [[https://github.com/doomemacs/doomemac
   (general-define-key :states 'normal "q" 'my/evil-record-macro)
   (general-define-key :states 'motion "RET" 'hkey-either)
 
+  (general-define-key :states 'normal "k" 'evil-previous-visual-line)
+  (general-define-key :states 'normal "j" 'evil-next-visual-line)
+
   (general-define-key :keymaps 'override "M-h" 'evil-window-left)
   (general-define-key :keymaps 'override "M-j" 'evil-window-down)
   (general-define-key :keymaps 'override "M-k" 'evil-window-up)
