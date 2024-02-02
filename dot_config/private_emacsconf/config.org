@@ -145,7 +145,9 @@ A lot of the code in this config is from [[https://github.com/doomemacs/doomemac
         evil-split-window-below t
         evil-vsplit-window-right t
         evil-undo-system 'undo-fu)
-  (evil-mode))
+  (evil-mode)
+  :config
+  (evil-select-search-module 'evil-search-module 'evil-search))
 
 (use-package evil-collection
   :after evil
