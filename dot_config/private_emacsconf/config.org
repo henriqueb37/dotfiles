@@ -29,6 +29,7 @@
 - [[#magit][MAGIT]]
 - [[#modeline][MODELINE]]
 - [[#vertico-and-consult][VERTICO (AND CONSULT)]]
+- [[#optimization][OPTIMIZATION]]
 - [[#org-mode][ORG MODE]]
   - [[#enabling-table-of-contents][Enabling Table of Contents]]
   - [[#eye-candy][Eye Candy]]
@@ -127,6 +128,8 @@ A lot of the code in this config is from [[https://github.com/doomemacs/doomemac
                 scroll-step 1
                 scroll-conservatively 9999)
   (pixel-scroll-precision-mode 1)
+  ;; Speed up startup, gets changed again in OPTIMIZATION section
+  (setq gc-cons-threshold most-positive-fixnum)
   (recentf-mode 1))
 #+end_src
 
@@ -815,6 +818,22 @@ Support for Javascript/Typescript.
 
 (use-package embark-consult
   :hook (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+* OPTIMIZATION
+Things to make Emacs a little faster.
+
+#+begin_src emacs-lisp
+(defun +gc-update-threshold ()
+  "Set garbage collection threshold."
+  ;; 8 MiB
+  (setq gc-cons-threshold (expt 2 23)))
+(add-hook 'emacs-startup-hook #'+gc-update-threshold)
+
+(defun my/aot-comp-elpaca-build-dir ()
+  "Natively compile Elpaca build dir."
+  (interactive)
+  (native-compile-async elpaca-builds-directory 'recursive))
 #+end_src
 
 * ORG MODE
