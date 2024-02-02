@@ -122,6 +122,7 @@ A lot of the code in this config is from [[https://github.com/doomemacs/doomemac
 (use-package emacs
   :elpaca nil
   :config
+  (add-to-list 'load-path (concat user-emacs-directory "custom/"))
   (setq custom-file (expand-file-name "customfile.el" user-emacs-directory))
   (setq ring-bell-function #'ignore)
   (setq-default scroll-margin 7
