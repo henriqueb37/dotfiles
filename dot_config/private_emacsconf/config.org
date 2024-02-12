@@ -1082,17 +1082,33 @@ Vterm is a terminal emulator within Emacs.  The 'shell-file-name' setting sets t
 
 * THEME
 #+begin_src emacs-lisp
-(use-package catppuccin-theme
+;; (use-package catppuccin-theme
+;;   :config
+;;   (load-theme 'catppuccin :no-confirm)
+;;   (defun +catppuccin-toggle-light ()
+;;     (interactive)
+;;     (if (eq catppuccin-flavor 'latte)
+;;         (setq catppuccin-flavor 'mocha)
+;;       (setq catppuccin-flavor 'latte))
+;;     (catppuccin-reload))
+;;   (my/leader-keys
+;;     "t c" '(+catppuccin-toggle-light :wk "Toggle light mode")))
+
+(defun my/toggle-light-theme (dark-theme light-theme)
+  "Disable DARK-THEME and enable LIGHT-THEME, or vice-versa."
+  (cond ((member dark-theme custom-enabled-themes)
+         (disable-theme dark-theme)
+         (load-theme light-theme :no-confirm))
+        ((member light-theme custom-enabled-themes)
+         (disable-theme light-theme)
+         (load-theme dark-theme :no-confirm))))
+
+(use-package base16-theme
   :config
-  (load-theme 'catppuccin :no-confirm)
-  (defun catppuccin-toggle-light ()
+  (load-theme 'base16-oxocarbon-dark t)
+  (defun +oxocarbon-toggle-light ()
     (interactive)
-    (if (eq catppuccin-flavor 'latte)
-        (setq catppuccin-flavor 'mocha)
-      (setq catppuccin-flavor 'latte))
-    (catppuccin-reload))
-  (my/leader-keys
-    "t c" '(catppuccin-toggle-light :wk "Toggle light mode")))
+    (my/toggle-light-theme 'base16-oxocarbon-dark 'base16-oxocarbon-light)))
 #+end_src
 
 * WHICH-KEY
