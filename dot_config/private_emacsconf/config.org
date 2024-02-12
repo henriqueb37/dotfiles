@@ -19,6 +19,7 @@
 - [[#flycheck][FLYCHECK]]
 - [[#fonts][FONTS]]
 - [[#graphical-user-interface-tweaks][GRAPHICAL USER INTERFACE TWEAKS]]
+  - [[#start-maximized][Start Maximized]]
   - [[#disable-menubar-toolbars-and-scrollbars][Disable Menubar, Toolbars and Scrollbars]]
   - [[#display-line-numbers-and-truncated-lines][Display Line Numbers and Truncated Lines]]
 - [[#helpful][HELPFUL]]
@@ -535,6 +536,11 @@ Install =luacheck= from your Linux distro's repositories for flycheck to work co
 #+end_src
 
 * GRAPHICAL USER INTERFACE TWEAKS
+** Start Maximized
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
 ** Disable Menubar, Toolbars and Scrollbars
 #+begin_src emacs-lisp
 (menu-bar-mode -1)
