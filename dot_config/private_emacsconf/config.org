@@ -862,15 +862,15 @@ Things to make Emacs a little faster.
 #+end_src
 
 ** Eye Candy
-Org-superstar gives us attractive bullets rather than asterisks.
-
 #+begin_src emacs-lisp
-(use-package org-superstar
-  :hook (org-mode . org-superstar-mode))
-  :init
-  (setq org-hide-leading-stars t
-        org-superstar-cycle-headline-bullets t
-        org-superstar-special-todo-items nil)
+(use-package org-modern
+  :config
+  (add-hook 'org-mode-hook #'org-modern-mode))
+
+(use-package org-modern-indent
+  :elpaca (org-modern-indent :host github :repo "jdtsmith/org-modern-indent")
+  :config
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 #+end_src
 
 Little tweaks to make org mode look better (most were taken from [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][this]] post):
