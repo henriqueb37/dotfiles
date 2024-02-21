@@ -10,6 +10,7 @@
   - [[#load-evil-mode][Load Evil Mode]]
   - [[#general-keybindigs][General keybindigs]]
 - [[#all-the-icons][ALL THE ICONS]]
+- [[#backup-files][BACKUP FILES]]
 - [[#buffer-move][BUFFER-MOVE]]
 - [[#centered-text][CENTERED TEXT]]
 - [[#chezmoi][CHEZMOI]]
@@ -332,6 +333,16 @@ This is an icon set that can be used with dashboard, dired, ibuffer and other Em
 
 (use-package all-the-icons-dired
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+#+end_src
+
+* BACKUP FILES
+This should fix some annoyances with backup files created automatically by emacs.  All backup files will be placed in a backup directory in the config directory.
+
+#+begin_src emacs-lisp
+(setq backup-directory-alist `(("." . ,(file-name-concat user-emacs-directory "backup/"))))
+(setq make-backup-files t)
+(setq version-control nil)
+(setq delete-old-version t)
 #+end_src
 
 * BUFFER-MOVE
