@@ -276,6 +276,10 @@ A lot of the code in this config is from [[https://github.com/doomemacs/doomemac
     "b r" '(revert-buffer :wk "Reload buffer"))
 
   (my/leader-keys
+    "c" '(:ignore t :wk "code")
+    "c i" '(consult-imenu :wk "Imenu"))
+
+  (my/leader-keys
     "e" '(:ignore t :wk "evaluate")    
     "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
     "e d" '(eval-defun :wk "Evaluate defun containing or after point")
