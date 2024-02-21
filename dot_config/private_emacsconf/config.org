@@ -918,10 +918,9 @@ Little tweaks to make org mode look better (most were taken from [[https://zzamb
 #+end_src
 
 ** Fix indentation annoyances
-Org mode source blocks have some really weird and annoying default indentation behavior.  I think this has to do with electric-indent-mode, which is turned on by default in Emacs.  So let's turn it OFF!
+Org mode source blocks have some really weird and annoying default indentation behavior.  The problems seem to have been fixed by just setting =org-src-preserve-indentation=.
 
 #+begin_src emacs-lisp
-(electric-indent-mode -1)
 (setq-default org-src-preserve-indentation t)
 #+end_src
 
