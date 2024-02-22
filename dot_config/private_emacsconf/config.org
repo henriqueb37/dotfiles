@@ -17,7 +17,6 @@
 - [[#company][COMPANY]]
 - [[#dashboard-splash-screen][DASHBOARD (SPLASH SCREEN)]]
 - [[#diminish][DIMINISH]]
-- [[#flycheck][FLYCHECK]]
 - [[#fonts][FONTS]]
 - [[#graphical-user-interface-tweaks][GRAPHICAL USER INTERFACE TWEAKS]]
   - [[#start-maximized][Start Maximized]]
@@ -25,8 +24,9 @@
   - [[#display-line-numbers-and-truncated-lines][Display Line Numbers and Truncated Lines]]
 - [[#helpful][HELPFUL]]
 - [[#hyperbole][HYPERBOLE]]
-- [[#language-support-lsp][LANGUAGE SUPPORT (LSP)]]
+- [[#language-supportlsp][LANGUAGE SUPPORT/LSP]]
   - [[#lua][Lua]]
+  - [[#markdown][Markdown]]
   - [[#typescript][Typescript]]
 - [[#magit][MAGIT]]
 - [[#modeline][MODELINE]]
@@ -451,7 +451,7 @@ one, an error is signaled."
 
 #+begin_src emacs-lisp
 (use-package company
-  :after (lsp-mode yasnippet)
+  :after (eglot yasnippet)
   :diminish
   :bind (:map prog-mode-map
          ("<tab>" . company-indent-or-complete-common)
@@ -499,27 +499,6 @@ This package implements hiding or abbreviation of the modeline displays (lighter
 
 #+begin_src emacs-lisp
 (use-package diminish)
-#+end_src
-
-* FLYCHECK
-Install =luacheck= from your Linux distro's repositories for flycheck to work correctly with lua files.  Install =python-pylint= for flycheck to work with python files.  Haskell works with flycheck as long as =haskell-ghc= or =haskell-stack-ghc= is installed.  For more information on language support for flycheck, [[https://www.flycheck.org/en/latest/languages.html][read this]].
-
-#+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t
-  :defer t
-  :diminish
-  :init (global-flycheck-mode)
-  :config
-  (setq flycheck-indication-mode 'right-fringe)
-  ;; Left-pointing arrow
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    [16 48 112 240 112 48 16] nil nil 'center))
-
-(use-package flycheck-posframe
-  :after flycheck
-  :diminish
-  :hook (flycheck-mode . flycheck-posframe-mode))
 #+end_src
 
 * FONTS
@@ -591,27 +570,37 @@ Manages links. Use RET to follow links.
   (hyperbole-mode 1))
 #+end_src
 
-* LANGUAGE SUPPORT (LSP)
-LSP support for Emacs.
+* LANGUAGE SUPPORT/LSP
+Major mode and LSP support for Emacs.
+
+This uses Emacs's builtin LSP support (eglot).
+
++ Eldoc box provides a nice frame that shows documentation on hover,
++ Sideline shows information on various things on the side.
 
 #+begin_src emacs-lisp
-(defun my/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
-
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
+(use-package eglot
+  :elpaca nil
   :config
-  (lsp-enable-which-key-integration t)
-  (add-hook 'lsp-mode-hook 'my/lsp-mode-setup))
+  (defvar my-lsps-directory
+          (file-name-concat user-emacs-directory "lsps/")
+          "The directory where lsp server programs should be placed.")
+  (defun +eglot-add-server-program (major-mode server-path)
+    "Add MAJOR-MODE to `eglot-server-programs' where SERVER-PATH is relative to `my-lsps-directory'"
+    (add-to-list 'eglot-server-programs
+                 `(,major-mode . (,(file-name-concat
+                                    my-lsps-directory
+                                    server-path))))))
 
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
-
-(use-package consult-lsp
-  :after (lsp-mode consult)
+(use-package eldoc-box
+  :after eglot
   :config
-  (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t))
+
+(use-package sideline
+  :init
+  (setq sideline-flymake-display-mode 'point
+        sideline-backends-right '(sideline-flymake)))
 #+end_src
 
 ** Lua
@@ -619,10 +608,21 @@ Support for Lua.
 
 #+begin_src emacs-lisp
 (use-package lua-mode
-  :hook (lua-mode . lsp-deferred)
+  :after eglot
+  :hook (lua-mode . eglot-ensure)
   :init
-  (setq lua-indent-level 2))
+  (setq lua-indent-level 2)
+  :config
+  (+eglot-add-server-program
+   'lua-mode
+   "lua-language-server/bin/lua-language-server"))
 #+end_src
+
+** Markdown
+#+begin_src emacs-lisp
+(use-package markdown-mode)
+#+end_src
+
 
 ** Typescript
 Support for Javascript/Typescript.
@@ -630,7 +630,7 @@ Support for Javascript/Typescript.
 #+begin_src emacs-lisp
 (use-package typescript-mode
   :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
+  :hook (typescript-mode . eglot-ensure)
   :config
   (setq typescript-indent-level 2))
 
