@@ -663,13 +663,15 @@ Support for Javascript/Typescript.
 
 #+begin_src emacs-lisp
 (use-package magit
+  :bind
+  (:map magit-status-mode-map
+   ("k" . magit-section-backward)
+   ("j" . magit-section-forward)
+   ("C-k" . magit-delete-thing)
+   ("C-j" . magit-status-jump))
   :config
-  (general-define-key
-   :keymaps 'magit-status-mode-map
-   "k" #'magit-section-backward
-   "j" #'magit-section-forward
-   "C-k" #'magit-delete-thing
-   "C-j" #'magit-status-jump))
+  (my/leader-keys
+    "c g" '(magit-status :wk "Git status")))
 
 (use-package diff-hl
   :after magit
