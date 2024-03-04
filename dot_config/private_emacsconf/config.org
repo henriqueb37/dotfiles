@@ -27,6 +27,7 @@
 - [[#language-supportlsp][LANGUAGE SUPPORT/LSP]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
+  - [[#rust][Rust]]
   - [[#typescript][Typescript]]
 - [[#magit][MAGIT]]
 - [[#modeline][MODELINE]]
@@ -459,7 +460,7 @@ one, an error is signaled."
          ("<tab>" . company-indent-or-complete-common))
   :custom
   (company-begin-commands '(self-insert-command))
-  (company-idle-delay .1)
+  (company-idle-delay .5)
   (company-minimum-prefix-length 2)
   (company-show-numbers t)
   (company-tooltip-align-annotations 't)
@@ -566,6 +567,10 @@ Manages links. Use RET to follow links.
 #+begin_src emacs-lisp
 (use-package hyperbole
   :diminish
+  :init
+  ;; Prevent hyperbole from opening Rust files as Raster image files
+  (setq hpath:external-file-suffixes
+        "e?ps\\|dvi\\|pdf\\|ps\\.g?[zZ]\\|gif\\|tiff?\\|xpm\\|xbm\\|xwd\\|pm\\|pbm\\|jpe?g\\|ras\\|xcf")
   :config
   (hyperbole-mode 1))
 #+end_src
@@ -595,9 +600,14 @@ This uses Emacs's builtin LSP support (eglot).
 (use-package eldoc-box
   :after eglot
   :config
-  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t))
+  (setq eldoc-idle-delay 1.7)
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
 
-(use-package sideline
+(use-package sideline)
+
+(use-package sideline-flymake
+  :after sideline
+  :hook (flymake-mode . sideline-mode)
   :init
   (setq sideline-flymake-display-mode 'point
         sideline-backends-right '(sideline-flymake)))
@@ -623,12 +633,32 @@ Support for Lua.
 (use-package markdown-mode)
 #+end_src
 
+** Rust
+#+begin_src emacs-lisp
+(use-package rust-mode
+  :after eglot
+  :hook (rust-mode . eglot-ensure)
+  :init
+  ;; Doesn't seem to load otherwise???????????
+  ;; I have no idea why
+  (require 'rust-mode)
+  :config
+  (add-to-list
+   'eglot-server-programs
+   '(rust-mode . ("rust-analyzer" :initializationOptions
+                  (:check (:command "clippy")
+                   :procMacro (:enable t)
+                   :cargo (:buildScripts (:enable t)
+                           :features "all"))))))
+#+end_src
+
 
 ** Typescript
 Support for Javascript/Typescript.
 
 #+begin_src emacs-lisp
 (use-package typescript-mode
+  :after eglot
   :mode "\\.ts\\'"
   :hook (typescript-mode . eglot-ensure)
   :config
