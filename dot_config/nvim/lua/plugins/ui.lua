@@ -1,7 +1,7 @@
-return {
+local M = {
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    'catppuccin/nvim',
+    name = 'catppuccin',
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'catppuccin'
@@ -9,26 +9,63 @@ return {
   },
 
   {
-    "shellRaining/hlchunk.nvim",
-    event = { "UIEnter" },
-    config = function()
-      require('hlchunk').setup{
-        chunk = {
-          exclude_filetypes = {
-            netrw = true,
-          },
+    'shellRaining/hlchunk.nvim',
+    event = { 'UIEnter' },
+    opts = {
+      chunk = {
+        enable = true,
+        use_treesitter = true,
+        exclude_filetypes = {
+          netrw = true,
+          startup = true,
         },
-        blank = {
-          chars = { '·' },
+      },
+      blank = {
+        enable = true,
+        chars = { '·' },
+        exclude_filetypes = {
+          netrw = true,
+          startup = true,
         },
-      }
-    end
+      },
+      indent = {
+        enable = true,
+        exclude_filetypes = {
+          netrw = true,
+          startup = true,
+        },
+      },
+    }
   },
 
   {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {}
+    'folke/todo-comments.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = {
+      highlight = {
+        pattern = '.*\\s<(KEYWORDS)[ :]'
+      },
+      search = {
+        pattern = '\\s(KEYWORDS)[\\s:]'
+      }
+    }
+  },
+
+  {
+    'norcalli/nvim-colorizer.lua',
+    event = 'VeryLazy',
+    config = function()
+      require('colorizer').setup()
+    end,
+  },
+
+  {
+    'startup-nvim/startup.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    lazy = false,
+    config = function()
+      require('startup').setup { theme = 'dashboard' }
+    end,
   },
 
   {
@@ -36,7 +73,8 @@ return {
     lazy = false,
     dependencies = { { 'nvim-tree/nvim-web-devicons' } },
     config = function()
-      require('lualine').setup{
+      ---@diagnostic disable-next-line: undefined-field
+      require('lualine').setup {
         options = {
           component_separators = '|',
           section_separators = { left = '', right = '' },
@@ -65,3 +103,4 @@ return {
     end,
   },
 }
+return M
