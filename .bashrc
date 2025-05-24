@@ -12,4 +12,12 @@ fi
 export PATH
 
 alias ls='ls --color=always'
+alias volume='amixer set Master'
 
+export HISTCONTROL=ignoreboth
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
+. "$HOME/.cargo/env"
+. "/home/henrique/.deno/env"

@@ -23,7 +23,7 @@ tmap('<Esc>', '<C-\\><C-n>') -- Exit insert mode in terminal mode
 tmap('<C-\\><Esc>', '<Esc>', { desc = 'input esc' })
 
 nmap('vgp', '`[v`]', { desc = 'select last pasted text (last edited text)' })
-nmap(']p', ':put<Cr>`[V`]=', { desc = 'paste with right indentation' })
+nmap(']p', '<cmd>put<Cr>`[V`]=', { desc = 'paste with correct indentation' })
 
 -- Erase last word with Ctrl + Backspace
 map({ 'i', 'c', 't' }, '<C-BS>', '<C-w>')
@@ -36,8 +36,8 @@ vmap('>', '>gv')
 vmap('<', '<gv')
 
 wk_prefixes.add('<leader>f', 'file')
-nmap('<leader>fc', ':Telescope find_files cwd=~/.dotfiles/dot_config/nvim<Cr>', { desc = 'find file in config' })
 nmap('<leader>fs', vim.cmd.write, { desc = 'save file' })
+nmap('<leader>fh', function() vim.cmd.cd(vim.fn.expand("%:h")) end, { desc = 'cd to current file' })
 
 wk_prefixes.add('<leader>b', 'buffer')
 nmap('<leader>bn', vim.cmd.bnext, { desc = 'goto next buffer' })
@@ -49,11 +49,16 @@ nmap('<leader>w', function() require('which-key').show { keys = '<C-w>', loop = 
 
 wk_prefixes.add('<leader>q', 'quit')
 nmap('<leader>qq', vim.cmd.quitall, { desc = 'quit all' })
+nmap('<leader>qa', function() vim.cmd [[quitall!]] end, { desc = 'quit all!' })
 
 wk_prefixes.add('<leader><Tab>', 'tab')
-nmap('<leader><Tab>c', vim.cmd.tabnew)
-nmap('<leader><Tab>n', vim.cmd.tabnext)
-nmap('<leader><Tab>p', vim.cmd.tabprevious)
+nmap('<leader><Tab>c', vim.cmd.tabnew, { desc = 'create tab' })
+nmap('<leader><Tab>n', vim.cmd.tabnext, { desc = 'next tab' })
+nmap('<leader><Tab>p', vim.cmd.tabprevious, { desc = 'previous tab' })
+nmap('<leader><Tab>t', function()
+  vim.cmd.tabnew()
+  vim.cmd.terminal()
+end, { desc = 'create terminal tab' })
 
 wk_prefixes.add('<leader>c', 'code')
 wk_prefixes.add('<leader>g', 'git')

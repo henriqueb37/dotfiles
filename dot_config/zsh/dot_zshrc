@@ -1,0 +1,61 @@
+# Execute tmux if not already running
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
+
+# Enable Powerlevel10k instant prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+export ZIM_HOME="${ZDOTDIR}/zim"
+
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  ${ZIM_HOME}/zimfw.zsh install
+fi
+
+source "${ZIM_HOME}/init.zsh"
+
+# Keys
+bindkey -e
+bindkey '^H' backward-kill-word
+bindkey '5~' kill-word
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+# Aliases
+alias ls="ls --color=always"
+alias la="ls -la"
+alias volume="amixer set Master"
+alias n="nvim"
+
+function fzf_file_picker {
+  fd . --base-directory "${1:-.}" | fzf
+}
+
+function dotconf {
+  selected_option=`fd . --base-directory ~/.dotfiles | fzf`
+  [[ -n "$selected_option" ]] && sudoedit "/etc/nixos/$selected_option"
+}
+
+function nixconf {
+  selected_option=`fd . --base-directory /etc/nixos | fzf`
+  [[ -n "$selected_option" ]] && sudoedit "/etc/nixos/$selected_option"
+}
+
+# Completion
+zstyle :compinstall filename "${ZDOTDIR}/.zshrc"
+autoload -Uz compinit
+compinit
+
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

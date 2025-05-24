@@ -1,6 +1,6 @@
 -- Install package manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
@@ -12,20 +12,24 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- local opts = {
---   performance = {
---     rtp = {
---       disabled_plugins = {
---         'netrwPlugin',
---       },
---     },
---   },
--- }
-
--- Plugin list
-require('lazy').setup{
-  { import = 'plugins.coding' },
-  { import = 'plugins.editor' },
-  { import = 'plugins.ui' },
+-- lazy.nvim config
+local opts = {
+  defaults = {
+    lazy = true,
+  },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        'netrwPlugin',
+      },
+    },
+  },
 }
 
+-- Plugin list
+require('lazy').setup {
+  unpack(opts),
+  spec = {
+    { import = 'plugins.specs' },
+  }
+}

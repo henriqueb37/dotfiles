@@ -1,0 +1,36 @@
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+	export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+
+HISTFILE=~/.config/zsh/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt CD_SILENT
+setopt PUSHD_IGNORE_DUPS
+setopt PUSHD_SILENT
+setopt PUSHD_TO_HOME
+setopt EXTENDED_GLOB
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt SHARE_HISTORY
+setopt INTERACTIVE_COMMENTS
+setopt LONG_LIST_JOBS
+setopt NO_BG_NICE
+setopt NO_CHECK_JOBS
+setopt NO_HUP
+
+export XDG_CONFIG_HOME="$HOME/.config"
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+	PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
+. ~/.deno/env
+
+if [ -e /home/henrique/.nix-profile/etc/profile.d/nix.sh ]; then . /home/henrique/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
