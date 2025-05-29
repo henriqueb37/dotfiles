@@ -45,6 +45,7 @@ g.neovide_cursor_vfx_mode = "wireframe"
 g.neovide_transparency = 0.9
 
 -- Filetype specifc config
+
 -- vim.api.nvim_create_augroup("c-options", { clear = true })
 -- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --   pattern = { "*.h", "*.c" },
@@ -52,7 +53,6 @@ g.neovide_transparency = 0.9
 --   callback = function()
 --     bo.tabstop = 4
 --     bo.shiftwidth = 4
---     bo.expandtab = false
 --   end,
 -- })
 
