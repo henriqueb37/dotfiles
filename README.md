@@ -2,6 +2,4 @@
 My configuration files
 
 ## Installation
-1. Install [chezmoi](https://www.chezmoi.io/)
-2. `chezmoi init --apply henriqueb37`
-
+Installation is currently undefined while I'm migrating to nix home manager
